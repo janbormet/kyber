@@ -126,9 +126,8 @@ func Test_Example_DKG(t *testing.T) {
 	decryptedMessage, err := ElGamalDecrypt(suite, secretKey, K, C)
 	require.Equal(t, message, decryptedMessage)
 
-	// 8. Variant B - Each node provide only a partial decryption by sending its
-	// public share. We then reconstruct the public commitment with those public
-	// shares.
+	// 9. Second version, each node provides only a partial decryption
+	// 9.1 each node sends its partial decryption
 	partials := make([]kyber.Point, n)
 	pubShares := make([]*share.PubShare, n)
 	for i, node := range nodes {
