@@ -3,6 +3,7 @@ package bn256
 import (
 	"bytes"
 	"encoding/hex"
+	"go.dedis.ch/kyber/v3/util/random"
 	"testing"
 )
 
@@ -98,4 +99,18 @@ func TestPointG2HashtoPoint(t *testing.T) {
 	testhashg2(t, []byte(""))
 	testhashg2(t, []byte("abc"))
 	testhashg2(t, []byte("test hash string"))
+}
+
+func TestPointG1_EmbedData(t *testing.T) {
+	m := []byte("The quick brown fox")
+	// Embed m onto prime group
+	M := newPointG1().Embed(m, random.New())
+
+	// Retrieve message encoded in x coordinate
+	mm, err := M.Data()
+	if err != nil {
+		t.Error(err)
+	} else if string(mm) != string(m) {
+		t.Error("G1: Embed/Data produced wrong output: ", string(mm), " expected ", string(m))
+	}
 }
